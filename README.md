@@ -1,155 +1,153 @@
-# Connect Four - Real-Time Multiplayer Game
+Connect Four – Real-Time Multiplayer Game
 
-A fully-featured real-time multiplayer Connect Four game with WebSocket communication, smart AI bot, leaderboard system, and Kafka event publishing.
+A real-time Connect Four multiplayer game where players can compete against each other or an intelligent bot. The game features live leaderboard tracking, WebSocket-based gameplay, and analytics event publishing via Kafka.
 
-## Features
+Features
 
-- **Real-time Multiplayer**: Play against other players with WebSocket-based gameplay
-- **Smart AI Bot**: If no opponent joins within 10 seconds, play against an intelligent bot that:
-  - Blocks your winning moves
-  - Creates its own winning opportunities
-  - Uses strategic positioning
-- **Matchmaking System**: Automatic player pairing with queue management
-- **Reconnection Support**: Rejoin your game within 30 seconds of disconnection
-- **Leaderboard**: Track wins, losses, and games played
-- **Kafka Integration**: Event publishing for analytics (game started, moves made, game results)
-- **Responsive UI**: Clean, modern interface built with React and Tailwind CSS
+Real-time Multiplayer: Play against other players with instant updates.
 
-## Tech Stack
+Smart AI Bot: If no opponent joins within 10 seconds, play against a competitive bot that:
 
-### Backend
-- **Node.js** with Express
-- **WebSocket (ws)** for real-time communication
-- **Supabase** (PostgreSQL) for data persistence
-- **Kafka** event publishing structure
+Blocks the opponent’s winning moves
 
-### Frontend
-- **React** with Vite
-- **Tailwind CSS** for styling
-- **Lucide React** for icons
-- **WebSocket client** for real-time updates
+Creates its own winning opportunities
 
-## Project Structure
+Uses strategic positioning
 
-```
-/
+Matchmaking System: Automatic player pairing with queue management
+
+Reconnection Support: Rejoin the game within 30 seconds of disconnection
+
+Leaderboard: Track wins, losses, and games played
+
+Kafka Integration: Event publishing for game analytics (game started, moves made, results)
+
+Responsive UI: Modern interface built with React and Tailwind CSS
+
+Tech Stack
+Backend
+
+Node.js with Express
+
+WebSocket (ws) for real-time gameplay
+
+Supabase (PostgreSQL) for persistent data
+
+Kafka for event publishing
+
+Frontend
+
+React with Vite
+
+Tailwind CSS for styling
+
+Lucide React for icons
+
+WebSocket client for real-time updates
+
+Project Structure
+project-root/
 ├── backend/                    # Node.js WebSocket server
 │   ├── src/
-│   │   ├── websocket/         # Game logic and WebSocket hub
-│   │   │   ├── game.js        # Core game engine
-│   │   │   └── hub.js         # Matchmaking and game management
-│   │   ├── bot/               # AI bot logic
-│   │   │   └── bot.js         # Smart bot with strategic moves
-│   │   ├── database/          # Supabase integration
-│   │   │   └── supabase.js    # Database queries
-│   │   ├── kafka/             # Event publishing
-│   │   │   └── publisher.js   # Kafka event publisher
-│   │   └── server.js          # Express + WebSocket server
+│   │   ├── websocket/          # Game logic and WebSocket hub
+│   │   │   ├── game.js
+│   │   │   └── hub.js
+│   │   ├── bot/                # AI bot logic
+│   │   │   └── bot.js
+│   │   ├── database/           # Supabase integration
+│   │   │   └── supabase.js
+│   │   ├── kafka/              # Kafka publisher
+│   │   │   └── publisher.js
+│   │   └── server.js           # Express + WebSocket server
 │   ├── Dockerfile
 │   ├── package.json
-│   └── .env                   # Environment variables
-├── src/                       # React frontend
-│   ├── components/            # UI components
-│   │   ├── GameBoard.jsx      # Interactive game board
-│   │   ├── UsernameForm.jsx   # Login screen
-│   │   ├── Leaderboard.jsx    # Leaderboard display
-│   │   └── GameModal.jsx      # Game over modal
+│   └── .env                     # Environment variables
+├── src/                        # React frontend
+│   ├── components/
 │   ├── pages/
-│   │   └── Game.jsx           # Main game page
 │   ├── websocket/
-│   │   └── socket.js          # WebSocket client wrapper
-│   └── App.jsx                # Root component
-├── supabase/migrations/       # Database migrations
-├── docker-compose.yml         # Local development setup
-└── README.md
-```
+│   ├── App.jsx
+│   ├── main.tsx
+│   └── index.css
+├── supabase/                    # Database migrations
+├── docker-compose.yml
+├── .gitignore
+├── README.md
+└── .env
 
-## Setup Instructions
+Prerequisites
 
-### Prerequisites
-- Node.js 18+ installed
-- Supabase account (free tier works)
-- Docker and Docker Compose (optional, for Kafka)
+Node.js 18+
 
-### 1. Database Setup
+Supabase account (free tier works)
 
-The Supabase database is already configured. The migration has created:
-- `games` table: Stores completed game records
-- `leaderboard` table: Tracks player statistics
+Docker and Docker Compose (optional, for Kafka)
 
-### 2. Backend Setup
-
-```bash
-cd backend
-npm install
-npm start
-```
-
-The backend server will start on `http://localhost:8080`
-
-### 3. Frontend Setup
-
-```bash
-npm install
-npm run dev
-```
-
-The frontend will start on `http://localhost:5173`
-
-### 4. Environment Variables
-
-**Backend** (`backend/.env`):
-```
+Environment Variables
+Backend (backend/.env)
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_supabase_anon_key
 PORT=8080
-KAFKA_BROKERS=localhost:9092
-```
+KAFKA_BROKERS=localhost:9092  # Optional if Kafka is not used
 
-**Frontend** (`.env`):
-```
+Frontend (.env)
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_WS_URL=ws://localhost:8080
 VITE_API_URL=http://localhost:8080
-```
 
-### 5. Optional: Kafka Setup
+Running Locally
+Backend
+cd backend
+npm install
+npm start
 
-To enable full Kafka event publishing:
 
-```bash
+Backend runs at http://localhost:8080.
+
+Frontend
+npm install
+npm run dev
+
+
+Frontend runs at http://localhost:5173.
+
+Optional: Kafka
 docker-compose up -d kafka zookeeper
-```
 
-This will start Kafka and Zookeeper containers for event streaming.
 
-## How to Play
+Starts Kafka and Zookeeper containers for analytics.
 
-1. **Enter Username**: Open the app and enter your username
-2. **Matchmaking**: Wait for an opponent (max 10 seconds)
-3. **Play**: Click columns to drop your disc (Red = Player 1, Yellow = Player 2)
-4. **Win**: Connect 4 discs horizontally, vertically, or diagonally
-5. **View Stats**: Check the leaderboard to see rankings
+How to Play
 
-## Game Rules
+Enter Username: Open the app and enter your username.
 
-- 7 columns × 6 rows grid
-- Players alternate turns
-- First to connect 4 discs wins
-- If the board fills up, it's a draw
-- 30-second reconnection window if disconnected
+Matchmaking: Wait for an opponent (max 10 seconds).
 
-## API Endpoints
+Play: Click columns to drop your disc (Red = Player 1, Yellow = Player 2).
 
-### GET `/health`
-Health check endpoint
+Win: Connect 4 discs horizontally, vertically, or diagonally.
 
-### GET `/leaderboard?limit=10`
-Returns top players sorted by wins
+View Stats: Check the leaderboard to see rankings.
 
-**Response:**
-```json
+Game Rules
+
+Grid: 7 columns × 6 rows
+
+Players alternate turns
+
+First to connect 4 discs wins
+
+Draw if board fills
+
+30-second reconnection window
+
+API Endpoints
+
+GET /health – Health check
+
+GET /leaderboard?limit=10 – Top players
+
 [
   {
     "username": "player1",
@@ -159,41 +157,28 @@ Returns top players sorted by wins
     "updated_at": "2025-10-20T..."
   }
 ]
-```
 
-## WebSocket Events
+WebSocket Events
+Client → Server
 
-### Client → Server
+Join Game
 
-**Join Game:**
-```json
-{
-  "type": "join",
-  "username": "player1"
-}
-```
+{ "type": "join", "username": "player1" }
 
-**Make Move:**
-```json
-{
-  "type": "move",
-  "gameId": "uuid",
-  "column": 3
-}
-```
 
-### Server → Client
+Make Move
 
-**Waiting for Opponent:**
-```json
-{
-  "type": "waiting",
-  "message": "Waiting for opponent..."
-}
-```
+{ "type": "move", "gameId": "uuid", "column": 3 }
 
-**Game Started:**
-```json
+Server → Client
+
+Waiting for Opponent
+
+{ "type": "waiting", "message": "Waiting for opponent..." }
+
+
+Game Started
+
 {
   "type": "gameStart",
   "gameId": "uuid",
@@ -202,10 +187,10 @@ Returns top players sorted by wins
   "board": [[0,0,...]],
   "currentPlayer": 1
 }
-```
 
-**Move Made:**
-```json
+
+Move Made
+
 {
   "type": "moveMade",
   "column": 3,
@@ -214,83 +199,54 @@ Returns top players sorted by wins
   "board": [[0,0,...]],
   "currentPlayer": 2
 }
-```
 
-**Game Over:**
-```json
-{
-  "type": "gameOver",
-  "winner": "player1",
-  "board": [[0,0,...]]
-}
-```
 
-## Kafka Events
+Game Over
 
-When Kafka is enabled, the following events are published:
+{ "type": "gameOver", "winner": "player1", "board": [[0,0,...]] }
 
-- `game_started`: When a new game begins
-- `move_made`: Each move by a player
-- `game_won`: When a player wins
-- `game_drawn`: When the game ends in a draw
-- `player_disconnected`: When a player loses connection
+Bot Strategy
 
-## Bot Strategy
+Win Detection – Take a winning move if available
 
-The AI bot uses a strategic decision-making process:
+Block Detection – Prevent opponent’s immediate win
 
-1. **Win Detection**: If bot can win this turn, take that move
-2. **Block Detection**: If opponent can win next turn, block them
-3. **Strategic Positioning**: Evaluate positions based on:
-   - Center column preference
-   - Creating multiple threat opportunities
-   - Avoiding setups that benefit opponent
-4. **Fallback**: Random valid move if no strategic option exists
+Strategic Positioning – Prefer center, create multiple threats
 
-## Deployment
+Fallback – Random valid move
 
-### Backend (Render/Railway/Fly.io)
+Deployment Notes
 
-1. Push code to GitHub
-2. Connect repository to hosting platform
-3. Set environment variables
-4. Deploy
+Backend: Use Render, Railway, or Fly.io for Node.js WebSocket server.
 
-### Frontend (Vercel/Netlify)
+Frontend: Use Vercel or Netlify for React app.
 
-1. Push code to GitHub
-2. Connect repository to hosting platform
-3. Set build command: `npm run build`
-4. Set environment variables with production URLs
-5. Deploy
+Note: Backend and frontend need separate hosting due to WebSocket requirements.
 
-## Development
+Local Run: If hosting is not possible, app can be run locally as above.
 
-Run both frontend and backend concurrently:
+Future Enhancements
 
-```bash
-# Terminal 1 - Backend
-cd backend && npm start
+User authentication with Supabase Auth
 
-# Terminal 2 - Frontend
-npm run dev
-```
+Private game rooms with invite codes
 
-## Future Enhancements
+Game replay system
 
-- [ ] User authentication with Supabase Auth
-- [ ] Private game rooms with invite codes
-- [ ] Game replay system
-- [ ] Multiple AI difficulty levels
-- [ ] Tournament mode
-- [ ] Chat system during games
-- [ ] Sound effects and animations
-- [ ] Mobile app version
+Multiple AI difficulty levels
 
-## License
+Tournament mode
 
-MIT License - feel free to use this project for learning or production.
+Chat system during games
 
-## Credits
+Sound effects and animations
+
+Mobile app version
+
+License
+
+MIT License – free for learning or production use.
+
+Credits
 
 Built with modern web technologies for real-time multiplayer gaming.

@@ -1,0 +1,16 @@
+{
+  "name": "connect-four-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
+    "express": "^4.18.2",
+    "ws": "^8.16.0",
+    "uuid": "^9.0.1",
+    "dotenv": "^16.4.5"
+  }
+}
